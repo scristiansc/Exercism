@@ -1,18 +1,10 @@
 class LogLineParser
   def initialize(line)
-    @line = line
+    @message = line.partition(':').last.strip
+    @log_level = line[/\[(.*?)\]/, 1].downcase
   end
 
-  def message
-    message_start_index = @line.index(":") + 1
-    @line[message_start_index..].strip
-  end
-
-  def log_level
-    start_index = @line.index("[") + 1
-    end_index = @line.index("]") - 1
-    @line[start_index..end_index].downcase
-  end
+  attr_reader :message, :log_level
 
   def reformat
     "#{message()} (#{log_level()})"
